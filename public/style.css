@@ -167,11 +167,11 @@ button:hover, #download-btn:hover {
   position: relative;
   width: 100%;
   padding-top: 141.4%; /* Rasio A4 */
-  border: 2px dashed var(--color-border); /* Border jahitan */
+  border: 2px dashed var(--color-border);
   border-radius: 8px;
-  overflow: hidden;
+  overflow: hidden; /* PENTING: Untuk clipping efek goresan */
   cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAEFJREFUSA3tkkEKACAIw/yv30okQgv1kDv+2gQlEUTZrGGa2gHhB1yAB/ABHqCAHnDAAQU8MOGCAmYcOMCC+G7A5Tr+XgAAAABJRU5ErkJggg=='), auto;
-  background-color: var(--color-paper);
+  background-color: var(--color-paper); /* Ini akan menjadi fallback jika canvas gagal */
 }
 
 #background-image {
@@ -182,7 +182,7 @@ button:hover, #download-btn:hover {
   height: calc(100% - 10px);
   border-radius: 4px;
   object-fit: cover;
-  z-index: 1; /* Atur sebagai lapisan bawah */
+  z-index: 1; /* Pastikan ini ada dan bernilai 1 */
 }
 
 #scratch-canvas {
@@ -193,7 +193,7 @@ button:hover, #download-btn:hover {
   height: calc(100% - 10px);
   border-radius: 4px;
   touch-action: none;
-  z-index: 2; /* Atur sebagai lapisan atas (yang menutupi) */
+  z-index: 2; /* Pastikan ini ada dan bernilai 2 */
 }
 
 #download-btn {

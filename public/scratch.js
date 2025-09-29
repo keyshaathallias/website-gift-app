@@ -1,4 +1,4 @@
-// public/scratch.js
+// public/scratch.js (Revisi Penuh)
 
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('scratch-container');
@@ -7,51 +7,52 @@ document.addEventListener('DOMContentLoaded', () => {
   const downloadBtn = document.getElementById('download-btn');
   const ctx = canvas.getContext('2d');
 
-  // Ambil nama file gambar dari URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const imageUrl = urlParams.get('image'); // Parameter 'image' sekarang berisi URL lengkap
+  const urlParams = new URLSearchParams(window.location.search);
+  const imageUrl = urlParams.get('image');
 
-    if (!imageUrl) {
-        container.innerHTML = '<h2>Link tidak valid atau gambar tidak ditemukan.</h2>';
-        return;
-    }
-    
-    // Langsung gunakan URL dari Cloudinary
-    bgImage.src = imageUrl;
-    downloadBtn.href = imageUrl;
+  if (!imageUrl) {
+    container.innerHTML = '<h2>Link tidak valid atau gambar tidak ditemukan.</h2>';
+    return;
+  }
   
-  const imagePath = `/uploads/${imageName}`;
-  bgImage.src = imagePath;
-
-  // Atur href untuk tombol download
-  downloadBtn.href = imagePath;
+  bgImage.src = imageUrl;
+  downloadBtn.href = imageUrl;
   
+  // Ini penting: Gambar di-load di background DULU
   bgImage.onload = () => {
-    // Sesuaikan ukuran canvas dengan ukuran container setelah gambar dimuat
+    // Pastikan ukuran canvas sesuai dengan container SETELAH gambar latar dimuat
+    // agar kita punya referensi ukuran yang benar.
     const rect = container.getBoundingClientRect();
     canvas.width = rect.width;
     canvas.height = rect.height;
 
-    // Gambar lapisan atas (yang akan digores)
+    // Gambar lapisan atas (yang akan digores) setelah ukuran canvas diset
     ctx.fillStyle = '#c6d5b3'; // Warna hijau sage
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canvas.width, canvas.height); // Menggambar kotak penuh
     
-    // Tulisan di atas lapisan
+    // Teks di atas lapisan
     ctx.font = 'bold 32px "Poppins", sans-serif';
     ctx.fillStyle = '#6b5b4b'; // Warna teks coklat
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('GOORES DI SINI', canvas.width / 2, canvas.height / 2);
+    ctx.fillText('SCRATCH HERE', canvas.width / 2, canvas.height / 2);
     
-    setupScratchListeners();
+    setupScratchListeners(); // Siapkan listener setelah semuanya digambar
+  };
+
+  // Jika gambar gagal dimuat, tampilkan error
+  bgImage.onerror = () => {
+    console.error("Gagal memuat gambar latar.");
+    container.innerHTML = '<h2>Gagal memuat gambar. Silakan coba lagi.</h2>';
   };
 
   let isDrawing = false;
   
   function getEventLocation(e) {
+    // ... (kode ini tidak perlu diubah, sudah benar) ...
     if (e.touches && e.touches.length === 1) {
       return { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    } else if (e.clientX && e.clientY) {
+    } else if (e.clientX !== undefined && e.clientY !== undefined) { // Perbaikan kecil untuk universalitas
       return { x: e.clientX, y: e.clientY };
     }
     return null;
@@ -67,17 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const x = loc.x - canvasRect.left;
     const y = loc.y - canvasRect.top;
 
-    // Ini adalah bagian "sihir"-nya
-    // 'destination-out' membuat apa yang kita gambar menjadi transparan (menghapus)
     ctx.globalCompositeOperation = 'destination-out';
     ctx.beginPath();
-    ctx.arc(x, y, 20, 0, Math.PI * 2); // Menggambar lingkaran sebagai "goresan"
+    ctx.arc(x, y, 20, 0, Math.PI * 2);
     ctx.fill();
   }
   
   function checkProgress() {
-      // Fungsi sederhana untuk menampilkan tombol download setelah digores
-      downloadBtn.classList.remove('hidden');
+    downloadBtn.classList.remove('hidden');
   }
 
   function setupScratchListeners() {
@@ -88,6 +86,5 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.addEventListener('touchend', () => { isDrawing = false; checkProgress(); });
     
     canvas.addEventListener('mousemove', scratch);
-    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); scratch(e); });
   }
-});
+})
