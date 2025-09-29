@@ -174,7 +174,7 @@ button:hover, #download-btn:hover {
   background-color: var(--color-paper);
 }
 
-#background-image, #scratch-canvas {
+#background-image {
   position: absolute;
   top: 5px;
   left: 5px;
@@ -182,10 +182,18 @@ button:hover, #download-btn:hover {
   height: calc(100% - 10px);
   border-radius: 4px;
   object-fit: cover;
+  z-index: 1; /* Atur sebagai lapisan bawah */
 }
 
 #scratch-canvas {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  border-radius: 4px;
   touch-action: none;
+  z-index: 2; /* Atur sebagai lapisan atas (yang menutupi) */
 }
 
 #download-btn {

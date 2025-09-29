@@ -31,6 +31,7 @@ form.addEventListener('submit', async (event) => {
     }
 
     const result = await response.json();
+    console.log('Respon dari server:', result);
     
     const giftURL = `${window.location.origin}/gift.html?image=${result.imageUrl}`;
 

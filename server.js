@@ -7,12 +7,19 @@ const cors = require('cors');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// Konfigurasi Cloudinary menggunakan variabel dari Railway
-cloudinary.config({ 
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
-  api_key: process.env.CLOUDINARY_API_KEY, 
-  api_secret: process.env.CLOUDINARY_API_SECRET 
-});
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
+try {
+  cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET 
+  });
+} catch (error) {
+  console.error("Kesalahan Konfigurasi Cloudinary:", error);
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -34,14 +41,14 @@ const upload = multer({ storage: storage });
 
 // Endpoint upload sekarang mengirim file ke Cloudinary
 app.post('/upload', upload.single('giftImage'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send({ message: 'Tolong unggah sebuah file.' });
+  if (!req.file || !req.file.path) {
+    console.error("Upload gagal atau req.file.path tidak ditemukan.");
+    return res.status(500).json({ error: 'Terjadi kesalahan di server saat upload.' });
   }
 
   // Kirim kembali URL aman dari Cloudinary, bukan path lokal
-  res.send({
+  res.json({
     message: 'File berhasil diunggah!',
-    // req.file.path berisi URL lengkap dari Cloudinary
     imageUrl: req.file.path 
   });
 });
