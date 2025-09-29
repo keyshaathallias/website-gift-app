@@ -194,6 +194,7 @@ button:hover, #download-btn:hover {
   border-radius: 4px;
   touch-action: none;
   z-index: 2; /* Pastikan ini ada dan bernilai 2 */
+  background-color: #c6d5b3;
 }
 
 #download-btn {
