@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buat Hadiahmu</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Buat Kartu Gores Hadiahmu 🎁</h1>
+      <p>Pilih sebuah gambar untuk dijadikan hadiah kejutan.</p>
+      <form id="uploadForm">
+        <div class="file-upload-wrapper">
+          <input
+            type="file"
+            id="giftImage"
+            name="giftImage"
+            accept="image/*"
+            required
+          />
+          <label for="giftImage" class="file-upload-label">Pilih Foto 🖼️</label>
+          <div id="fileName">Belum ada foto yang dipilih</div>
+        </div>
+        <button type="submit">Buat Link Hadiah!</button>
+      </form>
+      <div id="result" class="hidden">
+        <h2>Link Hadiah Berhasil Dibuat!</h2>
+        <p>Salin dan kirim link ini ke temanmu:</p>
+        <input type="text" id="giftLink" readonly />
+      </div>
+    </div>
+    <script src="upload.js"></script>
+  </body>
+</html>
