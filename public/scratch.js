@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillStyle = '#6b5b4b';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('GOORES DI SINI', canvas.width / 2, canvas.height / 2);
+    ctx.fillText('SCRATCH HERE', canvas.width / 2, canvas.height / 2);
     
     // Siapkan listener setelah semuanya digambar
     setupScratchListeners();
