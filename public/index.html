@@ -14,8 +14,8 @@
   </head>
   <body>
     <div class="container">
-      <h1>Buat Kartu Gores Hadiahmu 🎁</h1>
-      <p>Pilih sebuah gambar untuk dijadikan hadiah kejutan.</p>
+      <h1>Upload Your Image 🖼️</h1>
+      <p>Choose an image to surprise your friend!</p>
       <form id="uploadForm">
         <div class="file-upload-wrapper">
           <input
@@ -25,14 +25,16 @@
             accept="image/*"
             required
           />
-          <label for="giftImage" class="file-upload-label">Pilih Foto 🖼️</label>
-          <div id="fileName">Belum ada foto yang dipilih</div>
+          <label for="giftImage" class="file-upload-label"
+            >Choose Image 🖼️</label
+          >
+          <div id="fileName">No images selected yet</div>
         </div>
-        <button type="submit">Buat Link Hadiah!</button>
+        <button type="submit">Create Your Link!</button>
       </form>
       <div id="result" class="hidden">
-        <h2>Link Hadiah Berhasil Dibuat!</h2>
-        <p>Salin dan kirim link ini ke temanmu:</p>
+        <h2>Link Created Successfully!</h2>
+        <p>Copy and share this link to your friend:</p>
         <input type="text" id="giftLink" readonly />
       </div>
     </div>
