@@ -19,20 +19,27 @@ document.addEventListener('DOMContentLoaded', () => {
   downloadBtn.href = imageUrl;
   
   bgImage.onload = () => {
+    // Sesuaikan ukuran canvas dengan ukuran container
     const rect = container.getBoundingClientRect();
     canvas.width = rect.width;
     canvas.height = rect.height;
 
+    // Gambar lapisan atas (yang akan digores) oleh JavaScript
     ctx.fillStyle = '#c6d5b3';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
+    // --- TAMBAHKAN BARIS INI ---
+    // Jadikan background CSS transparan, karena JS sudah mengambil alih penutupnya
+    canvas.style.backgroundColor = 'transparent';
+
+    // Tulis teks di atas lapisan
     ctx.font = 'bold 32px "Poppins", sans-serif';
     ctx.fillStyle = '#6b5b4b';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('SCRATCH HERE', canvas.width / 2, canvas.height / 2);
+    ctx.fillText('GOORES DI SINI', canvas.width / 2, canvas.height / 2);
     
-    // Panggil fungsi untuk menyiapkan semua listener (mouse dan touch)
+    // Siapkan listener setelah semuanya digambar
     setupScratchListeners();
   };
 
