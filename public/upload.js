@@ -21,7 +21,7 @@ form.addEventListener('submit', async (event) => {
   formData.append('giftImage', fileInput.files[0]);
 
   try {
-    const response = await fetch('http://localhost:3000/upload', {
+    const response = await fetch('/upload', { // URL relatif sudah benar
       method: 'POST',
       body: formData,
     });
@@ -32,18 +32,14 @@ form.addEventListener('submit', async (event) => {
 
     const result = await response.json();
     
-    // Tampilkan link
-    const currentHost = window.location.origin;
-    const giftURL = `${currentHost}/gift.html?image=${result.filePath.split('/').pop()}`;
+    const giftURL = `${window.location.origin}/gift.html?image=${result.imageUrl}`;
 
     giftLinkInput.value = giftURL;
     resultDiv.classList.remove('hidden');
-
-    // Otomatis select link agar mudah di-copy
     giftLinkInput.select();
 
-  } catch (error) {
+} catch (error) {
     console.error('Error:', error);
     alert('Terjadi kesalahan saat mengunggah gambar.');
-  }
+}
 });

@@ -1,47 +1,48 @@
-// server.js
+// server.js (Versi Baru dengan Cloudinary)
 
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const cors = require('cors');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+// Konfigurasi Cloudinary menggunakan variabel dari Railway
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET 
+});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Menggunakan CORS agar frontend bisa mengakses API ini
 app.use(cors());
-
-// Menyajikan file statis dari folder 'public' (untuk frontend)
 app.use(express.static('public'));
-// Menyajikan file yang diunggah dari folder 'uploads'
-app.use('/uploads', express.static('uploads'));
 
-// Konfigurasi Multer untuk penyimpanan file
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Folder tujuan penyimpanan
+// Konfigurasi penyimpanan MENGGUNAKAN Cloudinary, bukan folder lokal
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'website-gifts', // Nama folder di Cloudinary
+    format: async (req, file) => 'jpg', // Format file
+    public_id: (req, file) => 'gift-' + Date.now(), // Nama file unik
   },
-  filename: function (req, file, cb) {
-    // Membuat nama file unik dengan timestamp
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-  }
 });
 
 const upload = multer({ storage: storage });
 
-// Endpoint untuk handle upload gambar
-// Menggunakan middleware 'upload.single('giftImage')'
-// 'giftImage' harus sama dengan nama field di form HTML
+// Endpoint upload sekarang mengirim file ke Cloudinary
 app.post('/upload', upload.single('giftImage'), (req, res) => {
   if (!req.file) {
     return res.status(400).send({ message: 'Tolong unggah sebuah file.' });
   }
 
-  // Jika berhasil, kirim kembali path ke file yang sudah diunggah
+  // Kirim kembali URL aman dari Cloudinary, bukan path lokal
   res.send({
     message: 'File berhasil diunggah!',
-    filePath: `/uploads/${req.file.filename}`
+    // req.file.path berisi URL lengkap dari Cloudinary
+    imageUrl: req.file.path 
   });
 });
 

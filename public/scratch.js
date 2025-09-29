@@ -8,13 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = canvas.getContext('2d');
 
   // Ambil nama file gambar dari URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const imageName = urlParams.get('image');
+    const urlParams = new URLSearchParams(window.location.search);
+    const imageUrl = urlParams.get('image'); // Parameter 'image' sekarang berisi URL lengkap
 
-  if (!imageName) {
-    container.innerHTML = '<h2>Link tidak valid atau gambar tidak ditemukan.</h2>';
-    return;
-  }
+    if (!imageUrl) {
+        container.innerHTML = '<h2>Link tidak valid atau gambar tidak ditemukan.</h2>';
+        return;
+    }
+    
+    // Langsung gunakan URL dari Cloudinary
+    bgImage.src = imageUrl;
+    downloadBtn.href = imageUrl;
   
   const imagePath = `/uploads/${imageName}`;
   bgImage.src = imagePath;
